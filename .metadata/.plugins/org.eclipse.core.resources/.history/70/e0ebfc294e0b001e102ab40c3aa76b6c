@@ -1,0 +1,9 @@
+package com.skyline.config;
+
+import org.springframework.context.annotation.Configuration;
+
+@Configuration
+public class SecurityConfig {
+	private final String issuer = "http://localhost:18080/auth/realms/HSKeyCloak1";
+	private final String jwkSetUri = "http://localhost:18080/auth/realms/HSKeyCloak1/protocol/openid-connect/certs";
+}

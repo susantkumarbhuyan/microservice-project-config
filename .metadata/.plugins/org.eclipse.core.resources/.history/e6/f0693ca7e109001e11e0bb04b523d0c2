@@ -1,0 +1,40 @@
+package com.skyline.service.impl;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.skyline.exception.ResourceNotFountException;
+import com.skyline.pozo.Rating;
+import com.skyline.repo.RatingRepo;
+import com.skyline.service.IRatingService;
+
+@Service
+public class RatingServiceImpl implements IRatingService {
+	@Autowired
+	private RatingRepo ratingRepo;
+
+	@Override
+	public Rating createRating(Rating rating) {
+		return ratingRepo.save(rating);
+	}
+
+	@Override
+	public List<Rating> getAllRating() {
+		return ratingRepo.findAll();
+	}
+
+	@Override
+	public Rating getSingleRating(long ratingId) {
+
+		return ratingRepo.findById(ratingId)
+				.orElseThrow(() -> new ResourceNotFountException("Rating id Not Found :" + ratingId));
+	}
+
+	@Override
+	public List<Rating> getRatingsByUserId(long userId) {
+		return ratingRepo.findAllByUserId(userId);
+	}
+
+}

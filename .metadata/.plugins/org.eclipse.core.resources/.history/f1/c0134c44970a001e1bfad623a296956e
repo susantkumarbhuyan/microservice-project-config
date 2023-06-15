@@ -1,0 +1,62 @@
+server:
+  port: 6001
+  
+spring:
+  datasource:
+    url: jdbc:postgresql://127.0.0.1:5432/MS_UserServiceDB
+    username: admin
+    password: admin
+    driver-class-name: org.postgresql.Driver
+  jpa:
+#    properties:
+#      hibernate:
+#       daiect: org.hibernate.dialect.PostgreSQLDialect  
+    hibernate:
+      ddl-auto: update     
+    show-sql: true
+  application:
+    name: USERSERVICE
+  config:
+    import:
+    -  optional:configserver:http://localhost:6005/
+    
+    
+management:
+  health:
+    circuitbreakers:
+      enabled: true
+  endpoints:
+    web:
+      exposure:
+        include:
+        - '*'
+  endpoint:
+    health:
+      show-details: always
+      
+resilience4j:
+  circuitbreaker:
+    instances: 
+     ratingHotelBraker: 
+        register-health-indicator: true
+        event-consumer-buffer-size: 10
+        failure-rate-threshold: 50
+        minimum-number-of-calls: 5
+        automatic-transition-from-open-to-half-open-enabled: true
+        wait-duration-in-open-state: 6s
+        permitted-number-of-calls-in-half-open-state: 3
+    
+            
+        
+    
+
+#eureka:
+#  instance:
+#    prefer-ip-address: true
+#    hostname: localhost
+#  client:
+#    fetch-registry: true
+#    register-with-eureka: true
+#    service-url:
+#      defaultZone: ${eureka_url:http://localhost:6004/eureka}
+    

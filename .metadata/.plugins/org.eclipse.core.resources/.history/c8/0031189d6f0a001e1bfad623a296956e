@@ -1,0 +1,65 @@
+package com.skyline.service.impl;
+
+import java.util.List;
+import java.util.stream.Collectors;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
+
+import com.skyline.exception.ResourceNotFoundException;
+import com.skyline.external.HotelService;
+import com.skyline.external.RatingService;
+import com.skyline.pozo.Hotel;
+import com.skyline.pozo.Rating;
+import com.skyline.pozo.User;
+import com.skyline.repo.UserRepo;
+import com.skyline.service.IUserService;
+
+@Service
+public class UserServiceImpl implements IUserService {
+	@Autowired
+	private UserRepo userRepo;
+
+	@Autowired
+	private RestTemplate restTemplate;
+
+	@Autowired
+	private RatingService ratingService;
+	@Autowired
+	private HotelService hotelService;
+
+	@Override
+	public User saveUser(User user) {
+		return userRepo.save(user);
+	}
+
+	@Override
+	public List<User> getAllUser() {
+		return userRepo.findAll();
+	}
+
+	@Override
+	public User getUser(long userId) {
+		User user = userRepo.findById(userId)
+				.orElseThrow(() -> new ResourceNotFoundException("User is  Not Found on Server !! : " + userId));
+		//String url = "http://RATINGSERVICE/ratings/user/"+userId;
+		//List <Rating> rating =restTemplate.getForObject(url, ArrayList.class);
+		List <Rating> ratings =	ratingService.getRating(userId);
+		ratings.stream().map(rating -> {
+            //api call to hotel service to get the hotel
+            //http://localhost:8082/hotels/1cbaf36d-0b28-4173-b5ea-f1cb0bc0a791
+            //ResponseEntity<Hotel> forEntity = restTemplate.getForEntity("http://HOTEL-SERVICE/hotels/"+rating.getHotelId(), Hotel.class);
+            Hotel hotel = hotelService.getHotel(rating.getHotelId());
+            // logger.info("response status code: {} ",forEntity.getStatusCode());
+            //set the hotel to rating
+            rating.setHotel(hotel);
+            //return the rating
+            return rating;
+        }).collect(Collectors.toList());
+
+		user.setRatings(rating);
+		return user;	
+	}
+
+}

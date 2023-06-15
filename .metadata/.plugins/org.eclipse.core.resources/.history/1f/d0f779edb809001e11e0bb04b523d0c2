@@ -1,0 +1,13 @@
+package com.skylilne.service;
+
+import java.util.List;
+
+import com.skylilne.pozo.User;
+
+public interface IUserService {
+	User saveUser(User user);
+
+	List<User> getAllUser();
+
+	User getUser(String userId);
+}

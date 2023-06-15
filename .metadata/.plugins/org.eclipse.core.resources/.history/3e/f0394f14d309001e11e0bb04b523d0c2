@@ -1,0 +1,5 @@
+package com.skyline.service;
+
+public interface IRatingService {
+
+}

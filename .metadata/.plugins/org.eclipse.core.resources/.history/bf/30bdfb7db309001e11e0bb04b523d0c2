@@ -1,0 +1,68 @@
+package com.hsignz.config;
+
+import java.util.Properties;
+
+import javax.sql.DataSource;
+
+import org.springframework.boot.jdbc.DataSourceBuilder;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
+import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
+
+import com.hsignz.common.constant.DBConstants;
+
+@Configuration
+//@EnableJpaRepositories
+@EnableTransactionManagement
+public class PostgresDBConfig {
+	@Bean
+	DataSource getDataSource() {
+		DataSourceBuilder<?> dataSourceBuilder = DataSourceBuilder.create();
+		dataSourceBuilder.driverClassName(DBConstants.DRIVER_CLASS_NAME);
+		dataSourceBuilder.url(DBConstants.DB_URL);
+		dataSourceBuilder.username(DBConstants.DB_PASSWORD);
+		dataSourceBuilder.password("admin");
+		return dataSourceBuilder.build();
+	}
+
+	@Bean
+	LocalContainerEntityManagerFactoryBean entityManagerFactory(DataSource dataSource) {
+		LocalContainerEntityManagerFactoryBean entityManagerFactoryBean = new LocalContainerEntityManagerFactoryBean();
+		entityManagerFactoryBean.setDataSource(dataSource);
+		entityManagerFactoryBean.setJpaVendorAdapter(new HibernateJpaVendorAdapter());
+		entityManagerFactoryBean.setPackagesToScan("com.hsignz");
+
+		Properties jpaProperties = new Properties();
+		jpaProperties.put("hibernate.dialect", DBConstants.HIBERNATE_DIALECT);
+		jpaProperties.put("hibernate.hbm2ddl.auto", DBConstants.HIBERNATE_DDL_AUTO);
+		jpaProperties.put("hibernate.show_sql", true);
+		jpaProperties.put("hibernate.format_sql", true);
+
+		entityManagerFactoryBean.setJpaProperties(jpaProperties);
+
+		return entityManagerFactoryBean;
+	}
+//	 @Bean
+//	     LocalSessionFactoryBean sessionFactory() {
+//	        LocalSessionFactoryBean sessionFactory = new LocalSessionFactoryBean();
+//	        sessionFactory.setDataSource(getDataSource());
+//	        sessionFactory.setPackagesToScan("com.hsignz.common.classes");
+//	        Properties hibernateProperties = new Properties();
+//	        hibernateProperties.put("hibernate.dialect", DBConstants.HIBERNATE_DIALECT);
+//	        hibernateProperties.put("hibernate.show_sql", true);
+//	        hibernateProperties.put("hibernate.hbm2ddl.auto", DBConstants.HIBERNATE_DDL_AUTO);
+//	        hibernateProperties.put("hibernate.format_sql", true);
+//	        sessionFactory.setHibernateProperties(hibernateProperties);
+//
+//	        return sessionFactory;
+//	    }
+
+//	    @Bean
+//	     HibernateTransactionManager transactionManager() {
+//	        HibernateTransactionManager transactionManager = new HibernateTransactionManager();
+//	        transactionManager.setSessionFactory(sessionFactory().getObject());
+//	        return transactionManager;
+//	    }
+}

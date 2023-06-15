@@ -1,0 +1,15 @@
+package com.skyline.repo;
+
+import java.util.List;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import com.skyline.pozo.Rating;
+
+public interface RatingRepo extends JpaRepository<Rating, Long> {
+
+	List<Rating> findAllByUserId(long userId);
+
+	List<Rating> findAllByHotelId(long hotelId);
+
+}

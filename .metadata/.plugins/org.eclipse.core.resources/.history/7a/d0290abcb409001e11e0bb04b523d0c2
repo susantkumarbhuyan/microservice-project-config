@@ -1,0 +1,13 @@
+package com.skylilne.pozo;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
+
+@Entity
+@Table(name = "micro_user")
+public class User {
+	private String userId;
+	private String name;
+	private String email;
+	private String about;
+}

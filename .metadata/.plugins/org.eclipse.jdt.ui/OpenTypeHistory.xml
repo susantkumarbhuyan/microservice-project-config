@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<typeInfoHistroy>
+    <typeInfo handle="=UserService/C:\/Users\/susan\/.m2\/repository\/io\/github\/openfeign\/feign-core\/12.3\/feign-core-12.3.jar=/maven.pomderived=/true=/=/maven.groupId=/io.github.openfeign=/=/maven.artifactId=/feign-core=/=/maven.version=/12.3=/=/maven.scope=/compile=/=/maven.pomderived=/true=/&lt;feign(RequestInterceptor.class[RequestInterceptor" modifiers="1537" timestamp="1686659871097"/>
+    <typeInfo handle="=UserService/C:\/Users\/susan\/.m2\/repository\/org\/springframework\/spring-test\/6.0.9\/spring-test-6.0.9.jar=/maven.pomderived=/true=/=/test=/true=/=/maven.groupId=/org.springframework=/=/maven.artifactId=/spring-test=/=/maven.version=/6.0.9=/=/maven.scope=/test=/=/maven.pomderived=/true=/&lt;org.springframework.test.web.client(RequestExpectation.class[RequestExpectation" modifiers="1537" timestamp="1684483199206"/>
+</typeInfoHistroy>

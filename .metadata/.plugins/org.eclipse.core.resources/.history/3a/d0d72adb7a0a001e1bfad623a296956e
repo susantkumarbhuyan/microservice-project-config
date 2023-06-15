@@ -1,0 +1,5 @@
+server:
+  port: 6005
+spring:
+  application:
+    name: CONFIGSERVER

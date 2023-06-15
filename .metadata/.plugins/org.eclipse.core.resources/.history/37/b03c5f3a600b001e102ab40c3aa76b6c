@@ -1,0 +1,65 @@
+package com.skyline.controller;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.skyline.pozo.User;
+import com.skyline.service.IUserService;
+
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
+import io.github.resilience4j.ratelimiter.annotation.RateLimiter;
+import io.github.resilience4j.retry.annotation.Retry;
+import lombok.extern.slf4j.Slf4j;
+
+@RestController
+@RequestMapping("/users")
+@Slf4j
+public class UserController {
+	@Autowired
+	private IUserService userService;
+
+	@PostMapping()
+	public User createUser(@RequestBody User user) {
+		return userService.saveUser(user);
+	}
+
+	@PreAuthorize("hasPermission('null', 'teamlead,manager')")
+	@CircuitBreaker(name = "ratingHotelBraker", fallbackMethod = "ratingHotelFallback")
+	@GetMapping("/{userId}")
+	public User getSingleUser(@PathVariable long userId) {
+		return userService.getUser(userId);
+	}
+
+	@Retry(name = "ratingHotelRetry", fallbackMethod = "ratingHotelFallback")
+	@GetMapping("/retry/{userId}")
+	public User getSingleUserRetry(@PathVariable long userId) {
+		return userService.getUser(userId);
+	}
+
+	@RateLimiter(name = "ratingHotelRateLimiter")
+	@GetMapping("/limit/{userId}")
+	public User getSingleUserRateLimiter(@PathVariable long userId) {
+		return userService.getUser(userId);
+	}
+	int count = 1;
+
+	public User ratingHotelFallback(long userId, Exception e) {
+		count++;
+		log.info("FallBack is executes because service is down: ", e.getMessage());
+		log.info("Retry Count : {}", count);
+		return User.builder().email("demo@hs.com").name("demo").userId(23).about("Dummy").build();
+	}
+
+	@GetMapping
+	public List<User> getAllUser() {
+		return userService.getAllUser();
+	}
+}

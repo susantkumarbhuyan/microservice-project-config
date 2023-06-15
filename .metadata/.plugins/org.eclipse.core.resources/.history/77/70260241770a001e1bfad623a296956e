@@ -1,0 +1,34 @@
+server:
+  port: 6000
+  
+  
+spring:
+  application:
+    name: APIGATEWAY
+  cloud:
+    gateway:
+      routes:
+      - id: USERSERVICE
+        uri: lb://USERSERVICE
+        predicates:
+        - Path=/users/**
+        
+      - id: HOTELSERVICE
+        uri: lb://HOTELSERVICE
+        predicates:
+        - Path=/hotels/**
+        
+      - id: RATINGSERVICE
+        uri: lb://RATINGSERVICE
+        predicates:
+        - Path=/ratings/**
+          
+eureka:
+  instance:
+    prefer-ip-address: true
+    hostname: localhost
+  client:
+    fetch-registry: true
+    register-with-eureka: true
+    service-url:
+      defaultZone: ${eureka_url:http://localhost:6004/eureka}

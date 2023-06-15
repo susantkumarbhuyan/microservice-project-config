@@ -1,0 +1,30 @@
+server:
+ port: 6001
+ 
+spring:
+  datasource:
+    url: jdbc:postgresql://127.0.0.1:5432/MS_UserServiceDB
+    username: admin
+    password: admin
+    driver-class-name: org.postgresql.Driver
+  jpa:
+#    properties:
+#      hibernate:
+#       daiect: org.hibernate.dialect.PostgreSQLDialect  
+    hibernate:
+      ddl-auto: update     
+    show-sql: true
+  application:
+    name: USER_SERVICE
+    
+eureka:
+  instance:
+    prefer-ip-address: true
+    hostname: 192.168.0.69
+  client:
+    fetch-registry: true
+    register-with-eureka: true
+    service-url:
+      defaultZone: ${eureka_url:http://192.168.0.69:6004/eureka}
+    
+    

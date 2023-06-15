@@ -1,0 +1,5 @@
+package com.skylilne.service;
+
+public interface IUserService {
+
+}

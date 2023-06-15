@@ -1,0 +1,29 @@
+package com.skyline.interceptor;
+
+import org.apache.commons.lang.StringUtils;
+import org.springframework.stereotype.Component;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
+
+import feign.RequestInterceptor;
+import feign.RequestTemplate;
+import jakarta.servlet.http.HttpServletRequest;
+
+@Component
+public class FeignClientInterceptor implements RequestInterceptor {
+
+	@Override
+	public void apply(RequestTemplate template) {
+		if (RequestContextHolder.getRequestAttributes() != null
+				&& RequestContextHolder.getRequestAttributes() instanceof ServletRequestAttributes) {
+			HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes())
+					.getRequest();
+			String authorization = request.getHeader("Authorization");
+			if (StringUtils.isNotBlank(authorization)) {
+				template.header("Authorization", new String[] { authorization });
+			}
+		}
+
+	}
+
+}

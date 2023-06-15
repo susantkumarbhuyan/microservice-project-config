@@ -1,0 +1,28 @@
+package com.skylilne.service.impl;
+
+import java.util.List;
+
+import com.skylilne.pozo.User;
+import com.skylilne.service.IUserService;
+
+public class UserServiceImpl implements IUserService {
+
+	@Override
+	public User saveUser(User user) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<User> getAllUser() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public User getUser(String userId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+}

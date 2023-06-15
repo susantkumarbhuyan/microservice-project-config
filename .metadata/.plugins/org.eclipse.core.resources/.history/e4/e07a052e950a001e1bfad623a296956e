@@ -1,0 +1,32 @@
+server:
+  port: 6003
+  
+spring:
+  datasource:
+    url: jdbc:postgresql://127.0.0.1:5432/MS_RatingServiceDB
+    username: admin
+    password: admin
+    driver-class-name: org.postgresql.Driver
+  jpa:
+#    properties:
+#      hibernate:
+#       daiect: org.hibernate.dialect.PostgreSQLDialect  
+    hibernate:
+      ddl-auto: update     
+    show-sql: true
+  application:
+    name: RATINGSERVICE
+  config:
+    import:
+    -  optional:configserver:http://localhost:6005/
+    
+#eureka:
+#  instance:
+#    prefer-ip-address: true
+#    hostname: localhost
+#  client:
+#    fetch-registry: true
+#    register-with-eureka: true
+#    service-url:
+#      defaultZone: ${eureka_url:http://localhost:6004/eureka}
+    

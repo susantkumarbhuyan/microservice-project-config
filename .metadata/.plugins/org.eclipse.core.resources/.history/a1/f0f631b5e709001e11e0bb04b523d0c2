@@ -1,0 +1,13 @@
+package com.skyline.external;
+
+import java.util.List;
+
+import org.springframework.cloud.openfeign.FeignClient;
+
+import com.skyline.pozo.Rating;
+
+@FeignClient(name ="RATINGSERVICE")
+public interface RatingService {
+
+	List<Rating> getRating();
+}

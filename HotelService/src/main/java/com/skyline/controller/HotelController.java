@@ -1,0 +1,36 @@
+package com.skyline.controller;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.skyline.pozo.Hotel;
+import com.skyline.service.IHotelService;
+
+@RestController
+@RequestMapping("/hotels")
+public class HotelController {
+	@Autowired
+	private IHotelService hotelService;
+
+	@PostMapping
+	public Hotel create(@RequestBody Hotel hotel) {
+		return hotelService.create(hotel);
+	}
+
+	@GetMapping
+	public List<Hotel> getAllHotel() {
+		return hotelService.getAllHotel();
+	}
+
+	@GetMapping("/{hotelId}")
+	public Hotel getSingleHote(@PathVariable long hotelId) {
+		return hotelService.getHotel(hotelId);
+	}
+}

@@ -1,0 +1,53 @@
+package com.skyline.service.impl;
+
+import java.util.List;
+import java.util.stream.Collectors;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.skyline.exception.ResourceNotFoundException;
+import com.skyline.external.HotelService;
+import com.skyline.external.RatingService;
+import com.skyline.pozo.Hotel;
+import com.skyline.pozo.Rating;
+import com.skyline.pozo.User;
+import com.skyline.repo.UserRepo;
+import com.skyline.service.IUserService;
+
+@Service
+public class UserServiceImpl implements IUserService {
+	@Autowired
+	private UserRepo userRepo;
+
+	@Autowired
+	private RatingService ratingService;
+	@Autowired
+	private HotelService hotelService;
+
+	@Override
+	public User saveUser(User user) {
+		return userRepo.save(user);
+	}
+
+	@Override
+	public List<User> getAllUser() {
+		return userRepo.findAll();
+	}
+
+	@Override
+	public User getUser(long userId) {
+		User user = userRepo.findById(userId)
+				.orElseThrow(() -> new ResourceNotFoundException("User is  Not Found on Server !! : " + userId));
+		List<Rating> ratings = ratingService.getRating(userId);
+		ratings.stream().map(rating -> {
+			Hotel hotel = hotelService.getHotel(rating.getHotelId());
+			rating.setHotel(hotel);
+			return rating;
+		}).collect(Collectors.toList());
+
+		user.setRatings(ratings);
+		return user;
+	}
+
+}

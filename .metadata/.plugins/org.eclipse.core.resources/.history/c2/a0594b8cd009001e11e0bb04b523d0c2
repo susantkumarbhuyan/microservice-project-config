@@ -1,0 +1,28 @@
+package com.skyline.service.impl;
+
+import java.util.List;
+
+import com.skyline.pozo.Hotel;
+import com.skyline.service.IHotelService;
+
+public class HotelServiceImpl implements IHotelService {
+
+	@Override
+	public Hotel create(Hotel hotel) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<Hotel> getAllHotel() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Hotel getHotel(long hotelId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+}
